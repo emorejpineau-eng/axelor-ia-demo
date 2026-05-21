@@ -118,170 +118,111 @@ const chatBox = document.querySelector(".chat-box");
 const quickButtons = document.querySelectorAll(".quick-actions button");
 
 const answers = {
-  "Comment créer une facture ?":
-    "Pour créer une facture dans Axelor : allez dans Facturation, cliquez sur Nouveau, sélectionnez le client, ajoutez les lignes de produits ou services, vérifiez la TVA puis validez la facture.",
-    <div class="source">
-  Source : Documentation Axelor / Procédure interne
-</div>
+    "Comment créer une facture ?":
+        "Pour créer une facture dans Axelor : allez dans Facturation, cliquez sur Nouveau, sélectionnez le client, ajoutez les lignes produits ou services, vérifiez la TVA puis validez la facture.",
 
-  "Comment faire une écriture comptable ?":
-    "Pour une écriture comptable : ouvrez le module Comptabilité, choisissez le journal, ajoutez les lignes débit/crédit, vérifiez que l’écriture est équilibrée puis validez.",
-    <div class="source">
-  Source : Documentation Axelor / Procédure interne
-</div>
+    "Comment faire une écriture comptable ?":
+        "Pour une écriture comptable : ouvrez le module Comptabilité, choisissez le journal, ajoutez les lignes débit/crédit, vérifiez que l’écriture est équilibrée puis validez.",
 
-  "Comment générer une balance ?":
-    "Pour générer une balance : allez dans Comptabilité, Rapports, sélectionnez Balance, choisissez la période comptable puis lancez l’édition ou l’export.",
-    <div class="source">
-  Source : Documentation Axelor / Procédure interne
-</div>
+    "Comment générer une balance ?":
+        "Pour générer une balance : allez dans Comptabilité, Rapports, sélectionnez Balance, choisissez la période comptable puis lancez l’édition ou l’export.",
 
+    "Modifie la procédure facture":
+        "Je propose une amélioration de la procédure facture en ajoutant une étape de vérification TVA avant validation finale."
 };
 
-function addMessage(text, type){
-
+function addUserMessage(text){
     const msg = document.createElement("div");
-
-    msg.className = "message " + type;
-
+    msg.className = "message user";
     msg.textContent = text;
-
     chatBox.insertBefore(msg, document.querySelector(".chat-input"));
-
-    /* SOURCE */
-
-    const source = document.createElement("div");
-
-    source.className = "source";
-
-    source.textContent = "Source : Documentation Axelor / Comptabilité";
-
-    chatBox.insertBefore(source, document.querySelector(".chat-input"));
-
 }
-function typeMessage(text, type){
 
+function typeBotMessage(text){
     const wrapper = document.createElement("div");
-
     wrapper.className = "message-wrapper";
 
     const avatar = document.createElement("div");
-
     avatar.className = "avatar";
-
     avatar.innerHTML = "🤖";
 
+    const content = document.createElement("div");
+    content.className = "bot-content";
+
     const msg = document.createElement("div");
+    msg.className = "message bot";
 
-    msg.className = "message " + type;
-
+    content.appendChild(msg);
     wrapper.appendChild(avatar);
-
-    wrapper.appendChild(msg);
+    wrapper.appendChild(content);
 
     chatBox.insertBefore(wrapper, document.querySelector(".chat-input"));
 
     let i = 0;
 
     const typing = setInterval(() => {
-
         msg.textContent += text.charAt(i);
-
         i++;
-
         chatBox.scrollTop = chatBox.scrollHeight;
 
         if(i >= text.length){
-
             clearInterval(typing);
 
-            /* SOURCE */
-
             const source = document.createElement("div");
-
             source.className = "source";
+            source.innerHTML = 'Source : Documentation Axelor • <a href="#">Voir procédure →</a>';
+            content.appendChild(source);
 
-            source.innerHTML =
-            'Source : Documentation Axelor • <a href="#">Voir procédure →</a>';
+            if(text.includes("Je propose une amélioration")){
+                const proposal = document.createElement("div");
+                proposal.className = "proposal-box";
 
-            wrapper.appendChild(source);
+                proposal.innerHTML = `
+                    <h4>Proposition IA</h4>
 
+                    <div class="compare">
+                        <div class="old-version">
+                            <strong>Ancienne version</strong>
+                            <p>Validation de la facture.</p>
+                        </div>
+
+                        <div class="new-version">
+                            <strong>Nouvelle version proposée</strong>
+                            <p>Vérification TVA → Validation de la facture.</p>
+                        </div>
+                    </div>
+
+                    <div class="proposal-actions">
+                        <button class="accept">✓ Accepter</button>
+                        <button class="reject">✕ Refuser</button>
+                    </div>
+                `;
+
+                content.appendChild(proposal);
+            }
         }
-
     }, 25);
-
 }
 
 function askQuestion(question){
-  if(!question.trim()) return;
+    const cleanQuestion = question.trim();
+    if(!cleanQuestion) return;
 
-  addMessage(question, "user");
-
-  const response = answers[question] || 
-  "Je peux vous guider sur Axelor : comptabilité, facturation, écritures, balance, workflows ERP et documentation métier.";
-
-  setTimeout(() => {
-
-    loading.remove();
-
-    addMessage(response, "bot");
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-}, 1200);
-
-  input.value = "";
-}
-
-sendBtn.addEventListener("click", () => askQuestion(input.value));
-
-input.addEventListener("keydown", e => {
-  if(e.key === "Enter") askQuestion(input.value);
-});
-
-quickButtons.forEach(button => {
-  button.addEventListener("click", () => askQuestion(button.textContent));
-});
-
-
-</script>
-
-<script>
-const input = document.querySelector(".chat-input input");
-const sendBtn = document.querySelector(".chat-input button");
-const chatBox = document.querySelector(".chat-box");
-const quickButtons = document.querySelectorAll(".quick-actions button");
-
-const answers = {
-    "Comment créer une facture ?": "Pour créer une facture dans Axelor : allez dans Facturation, cliquez sur Nouveau, sélectionnez le client, ajoutez les lignes produits ou services, vérifiez la TVA puis validez la facture.",
-
-    "Comment faire une écriture comptable ?": "Pour une écriture comptable : ouvrez le module Comptabilité, choisissez le journal, ajoutez les lignes débit/crédit, vérifiez que l’écriture est équilibrée puis validez.",
-
-    "Comment générer une balance ?": "Pour générer une balance : allez dans Comptabilité, Rapports, sélectionnez Balance, choisissez la période comptable puis lancez l’édition ou l’export."
-};
-
-function addMessage(text, type){
-    const msg = document.createElement("div");
-    msg.className = "message " + type;
-    msg.textContent = text;
-
-    chatBox.insertBefore(msg, document.querySelector(".chat-input"));
-}
-
-function askQuestion(question){
-    if(!question.trim()) return;
-
-    addMessage(question, "user");
+    addUserMessage(cleanQuestion);
 
     const loading = document.createElement("div");
-loading.className = "message bot typing";
-loading.textContent = "ERP-IA™ analyse la documentation Axelor...";
-chatBox.insertBefore(loading, document.querySelector(".chat-input"));
+    loading.className = "message bot typing";
+    loading.textContent = "ERP-IA™ analyse la documentation Axelor...";
+    chatBox.insertBefore(loading, document.querySelector(".chat-input"));
 
-setTimeout(() => {
-    loading.remove();
-    addMessage(response, "bot");
-}, 1200);
+    const response = answers[cleanQuestion] ||
+        "Je peux vous guider sur Axelor : comptabilité, facturation, écritures, balance, workflows ERP et documentation métier.";
+
+    setTimeout(() => {
+        loading.remove();
+        typeBotMessage(response);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 1200);
 
     input.value = "";
 }
@@ -302,20 +243,56 @@ quickButtons.forEach(button => {
     });
 });
 
-// Ouvrir la popup
-document.addEventListener('click', function (e) {
-  if (e.target.matches('.source a')) {
-    e.preventDefault();
-    document.getElementById('procedureModal').style.display = 'flex';
-  }
-});
+document.addEventListener("click", function(e){
 
-// Fermer la popup
-document.querySelector('.close-procedure').addEventListener('click', function () {
-  document.getElementById('procedureModal').style.display = 'none';
+    if(e.target.matches(".source a")){
+        e.preventDefault();
+        document.getElementById("procedureModal").style.display = "flex";
+    }
+
+    if(e.target.classList.contains("accept")){
+        e.target.parentElement.innerHTML =
+        '<div class="validation-success">✓ Modification validée — mise à jour documentaire en attente de validation finale.</div>';
+
+        const audit = document.createElement("div");
+        audit.className = "audit-log";
+        audit.innerHTML = `
+            <strong>Journal IA</strong><br>
+            Action : modification documentaire proposée<br>
+            Statut : validée<br>
+            Utilisateur : Jérôme Pineau<br>
+            Horodatage : ${new Date().toLocaleString()}
+        `;
+
+        e.target.closest(".proposal-box").appendChild(audit);
+    }
+
+    if(e.target.classList.contains("reject")){
+        e.target.parentElement.innerHTML =
+        '<div class="validation-reject">✕ Modification refusée — aucune modification appliquée.</div>';
+
+        const audit = document.createElement("div");
+        audit.className = "audit-log";
+        audit.innerHTML = `
+            <strong>Journal IA</strong><br>
+            Action : modification documentaire proposée<br>
+            Statut : refusée<br>
+            Utilisateur : Jérôme Pineau<br>
+            Horodatage : ${new Date().toLocaleString()}
+        `;
+
+        e.target.closest(".proposal-box").appendChild(audit);
+    }
+
+    if(e.target.classList.contains("close-procedure")){
+        document.getElementById("procedureModal").style.display = "none";
+    }
+
+    if(e.target.id === "procedureModal"){
+        document.getElementById("procedureModal").style.display = "none";
+    }
 });
 </script>
-<script>
 
 /* TON SCRIPT */
 
