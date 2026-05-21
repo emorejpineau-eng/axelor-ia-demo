@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="main.css">
+<title>ERP-IA™ Assistant Axelor</title>
+<link rel="stylesheet" href="axelor-ia.css">
+</head>
+
+<body>
+
+<section class="hero">
+    <div class="badge">SMART-IA™ × AXELOR</div>
+
+    <h1>ERP-IA™ Assistant Axelor</h1>
+
+    <p>
+        Transformez la documentation Axelor en assistant IA métier,
+        capable de guider les utilisateurs, répondre aux questions ERP
+        et accélérer la prise en main des modules.
+    </p>
+
+    <div class="hero-buttons">
+        <a href="#assistant" class="btn primary">Tester l’assistant</a>
+        <a href="#roadmap" class="btn secondary">Voir la roadmap</a>
+    </div>
+</section>
+
+<section class="cards">
+
+    <div class="card">
+        <h3>Documentation IA</h3>
+        <p>La documentation devient conversationnelle et accessible en langage naturel.</p>
+    </div>
+
+    <div class="card">
+        <h3>Copilote Métier</h3>
+        <p>L’utilisateur est guidé étape par étape dans les modules Axelor.</p>
+    </div>
+
+    <div class="card">
+        <h3>ERP Cognitif</h3>
+        <p>Préparation progressive vers des agents IA connectés aux processus ERP.</p>
+    </div>
+
+</section>
+
+<section class="assistant-section" id="assistant">
+
+    <div class="assistant-header">
+        <h2>Assistant IA Axelor</h2>
+        <p>Posez une question sur la comptabilité, les factures, les écritures ou les workflows ERP.</p>
+    </div>
+
+    <div class="chat-box">
+
+        <div class="message bot">
+            Bonjour, je suis votre assistant ERP-IA™ Axelor.
+            Comment puis-je vous aider ?
+        </div>
+
+        <div class="quick-actions">
+            <button>Comment créer une facture ?</button>
+            <button>Comment faire une écriture comptable ?</button>
+            <button>Comment générer une balance ?</button>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" placeholder="Écrivez votre question ici...">
+            <button>Envoyer</button>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="roadmap" id="roadmap">
+
+    <h2>Roadmap de transformation</h2>
+
+    <div class="steps">
+        <div class="step">
+            <span>01</span>
+            <h3>Documentation</h3>
+            <p>Centraliser la documentation Axelor et les procédures internes.</p>
+        </div>
+
+        <div class="step">
+            <span>02</span>
+            <h3>RAG IA</h3>
+            <p>Transformer les documents en base de connaissance intelligente.</p>
+        </div>
+
+        <div class="step">
+            <span>03</span>
+            <h3>Copilote</h3>
+            <p>Créer un assistant métier conversationnel pour les utilisateurs.</p>
+        </div>
+
+        <div class="step">
+            <span>04</span>
+            <h3>Agents ERP</h3>
+            <p>Connecter progressivement l’IA aux actions Axelor sécurisées.</p>
+        </div>
+    </div>
+
+</section>
+
+<footer>
+    <p>ERP-IA™ Assistant Axelor — Créé par Jérôme Pineau</p>
+</footer>
+
+<script>
+const input = document.querySelector(".chat-input input");
+const sendBtn = document.querySelector(".chat-input button");
+const chatBox = document.querySelector(".chat-box");
+const quickButtons = document.querySelectorAll(".quick-actions button");
+
+const answers = {
+  "Comment créer une facture ?":
+    "Pour créer une facture dans Axelor : allez dans Facturation, cliquez sur Nouveau, sélectionnez le client, ajoutez les lignes de produits ou services, vérifiez la TVA puis validez la facture.",
+    <div class="source">
+  Source : Documentation Axelor / Procédure interne
+</div>
+
+  "Comment faire une écriture comptable ?":
+    "Pour une écriture comptable : ouvrez le module Comptabilité, choisissez le journal, ajoutez les lignes débit/crédit, vérifiez que l’écriture est équilibrée puis validez.",
+    <div class="source">
+  Source : Documentation Axelor / Procédure interne
+</div>
+
+  "Comment générer une balance ?":
+    "Pour générer une balance : allez dans Comptabilité, Rapports, sélectionnez Balance, choisissez la période comptable puis lancez l’édition ou l’export.",
+    <div class="source">
+  Source : Documentation Axelor / Procédure interne
+</div>
+
+};
+
+function addMessage(text, type){
+
+    const msg = document.createElement("div");
+
+    msg.className = "message " + type;
+
+    msg.textContent = text;
+
+    chatBox.insertBefore(msg, document.querySelector(".chat-input"));
+
+    /* SOURCE */
+
+    const source = document.createElement("div");
+
+    source.className = "source";
+
+    source.textContent = "Source : Documentation Axelor / Comptabilité";
+
+    chatBox.insertBefore(source, document.querySelector(".chat-input"));
+
+}
+function typeMessage(text, type){
+
+    const wrapper = document.createElement("div");
+
+    wrapper.className = "message-wrapper";
+
+    const avatar = document.createElement("div");
+
+    avatar.className = "avatar";
+
+    avatar.innerHTML = "🤖";
+
+    const msg = document.createElement("div");
+
+    msg.className = "message " + type;
+
+    wrapper.appendChild(avatar);
+
+    wrapper.appendChild(msg);
+
+    chatBox.insertBefore(wrapper, document.querySelector(".chat-input"));
+
+    let i = 0;
+
+    const typing = setInterval(() => {
+
+        msg.textContent += text.charAt(i);
+
+        i++;
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        if(i >= text.length){
+
+            clearInterval(typing);
+
+            /* SOURCE */
+
+            const source = document.createElement("div");
+
+            source.className = "source";
+
+            source.innerHTML =
+            'Source : Documentation Axelor • <a href="#">Voir procédure →</a>';
+
+            wrapper.appendChild(source);
+
+        }
+
+    }, 25);
+
+}
+
+function askQuestion(question){
+  if(!question.trim()) return;
+
+  addMessage(question, "user");
+
+  const response = answers[question] || 
+  "Je peux vous guider sur Axelor : comptabilité, facturation, écritures, balance, workflows ERP et documentation métier.";
+
+  setTimeout(() => {
+
+    loading.remove();
+
+    addMessage(response, "bot");
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+}, 1200);
+
+  input.value = "";
+}
+
+sendBtn.addEventListener("click", () => askQuestion(input.value));
+
+input.addEventListener("keydown", e => {
+  if(e.key === "Enter") askQuestion(input.value);
+});
+
+quickButtons.forEach(button => {
+  button.addEventListener("click", () => askQuestion(button.textContent));
+});
+
+
+</script>
+
+<script>
+const input = document.querySelector(".chat-input input");
+const sendBtn = document.querySelector(".chat-input button");
+const chatBox = document.querySelector(".chat-box");
+const quickButtons = document.querySelectorAll(".quick-actions button");
+
+const answers = {
+    "Comment créer une facture ?": "Pour créer une facture dans Axelor : allez dans Facturation, cliquez sur Nouveau, sélectionnez le client, ajoutez les lignes produits ou services, vérifiez la TVA puis validez la facture.",
+
+    "Comment faire une écriture comptable ?": "Pour une écriture comptable : ouvrez le module Comptabilité, choisissez le journal, ajoutez les lignes débit/crédit, vérifiez que l’écriture est équilibrée puis validez.",
+
+    "Comment générer une balance ?": "Pour générer une balance : allez dans Comptabilité, Rapports, sélectionnez Balance, choisissez la période comptable puis lancez l’édition ou l’export."
+};
+
+function addMessage(text, type){
+    const msg = document.createElement("div");
+    msg.className = "message " + type;
+    msg.textContent = text;
+
+    chatBox.insertBefore(msg, document.querySelector(".chat-input"));
+}
+
+function askQuestion(question){
+    if(!question.trim()) return;
+
+    addMessage(question, "user");
+
+    const loading = document.createElement("div");
+loading.className = "message bot typing";
+loading.textContent = "ERP-IA™ analyse la documentation Axelor...";
+chatBox.insertBefore(loading, document.querySelector(".chat-input"));
+
+setTimeout(() => {
+    loading.remove();
+    addMessage(response, "bot");
+}, 1200);
+
+    input.value = "";
+}
+
+sendBtn.addEventListener("click", () => {
+    askQuestion(input.value);
+});
+
+input.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+        askQuestion(input.value);
+    }
+});
+
+quickButtons.forEach(button => {
+    button.addEventListener("click", function(){
+        askQuestion(this.textContent.trim());
+    });
+});
+
+// Ouvrir la popup
+document.addEventListener('click', function (e) {
+  if (e.target.matches('.source a')) {
+    e.preventDefault();
+    document.getElementById('procedureModal').style.display = 'flex';
+  }
+});
+
+// Fermer la popup
+document.querySelector('.close-procedure').addEventListener('click', function () {
+  document.getElementById('procedureModal').style.display = 'none';
+});
+</script>
+<script>
+
+/* TON SCRIPT */
+
+</script>
+
+<!-- POPUP PROCEDURE -->
+
+<div class="procedure-modal" id="procedureModal">
+
+    <div class="procedure-content">
+
+        <span class="close-procedure">&times;</span>
+
+        <h2>Procédure Axelor</h2>
+
+        <ol>
+            <li>Ouvrir le module concerné.</li>
+            <li>Sélectionner la fonction métier.</li>
+            <li>Renseigner les informations demandées.</li>
+            <li>Vérifier les données.</li>
+            <li>Valider ou exporter le résultat.</li>
+        </ol>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+</body>
+</html>
